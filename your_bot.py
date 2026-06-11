@@ -22,6 +22,7 @@ Useful functions:
 
 legal_pawn_advance_moves(board: chess.Board) -> list[chess.Move]
     Returns a list of all legal moves that the current player can make in the given board state
+    DO NOT USE board.legal_moves, because that will give you moves that are legal in normal chess but not legal in Pawn Advance. You should use this function instead to get the list of legal moves.
 
 chess_board.copy() -> chess.Board
     Returns a copy of the given chess board. This is useful because if you want to test a move to see what it would do, you can copy the board and then test the move out without modifying the original board.
