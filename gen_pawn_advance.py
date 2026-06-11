@@ -1,5 +1,5 @@
 # YOU DO NOT NEED TO READ OR UNDERSTAND THIS CODE AT ALL
-# Implementation of the Pawn War chess variant, where each player starts with 8 pawns and the goal is to get a pawn to the other side of the board or capture all of the opponent's pawns.
+# Implementation of the Pawn Advance chess variant, where each player starts with 8 pawns and the goal is to get a pawn to the other side of the board or capture all of the opponent's pawns.
 # En Passant is not allowed, and games end in a tie if a player has no legal moves on their turn (even if they still have pawns left).
 
 import chess
@@ -31,7 +31,7 @@ class LabeledBoard(chess.Board):
         return "\n".join(rows)
 
 
-def make_pawn_war_board() -> LabeledBoard:
+def make_pawn_advance_board() -> LabeledBoard:
     board = LabeledBoard(None)
 
     for column in range(8):
@@ -126,7 +126,7 @@ def is_capture_move(board: chess.Board, move: chess.Move, color: chess.Color) ->
     return captured_piece == chess.Piece(chess.PAWN, not color)
 
 
-def is_legal_pawn_war_move(board: chess.Board, move: chess.Move) -> bool:
+def is_legal_pawn_advance_move(board: chess.Board, move: chess.Move) -> bool:
     piece = board.piece_at(move.from_square)
 
     if piece != chess.Piece(chess.PAWN, board.turn):
@@ -138,7 +138,7 @@ def is_legal_pawn_war_move(board: chess.Board, move: chess.Move) -> bool:
     return is_forward_move(board, move, board.turn) or is_capture_move(board, move, board.turn)
 
 
-def legal_pawn_war_moves(board: chess.Board) -> list[chess.Move]:
+def legal_pawn_advance_moves(board: chess.Board) -> list[chess.Move]:
     moves: list[chess.Move] = []
 
     for from_square in chess.SQUARES:
@@ -172,7 +172,7 @@ def legal_pawn_war_moves(board: chess.Board) -> list[chess.Move]:
         for to_square in possible_squares:
             move = chess.Move(from_square, to_square)
 
-            if is_legal_pawn_war_move(board, move):
+            if is_legal_pawn_advance_move(board, move):
                 moves.append(move)
 
     return moves
@@ -190,7 +190,7 @@ def pawn_reached_end(board: chess.Board) -> chess.Color | None:
     return None
 
 
-def pawn_war_result(board: chess.Board) -> WinnerColor:
+def pawn_advance_result(board: chess.Board) -> WinnerColor:
     # set winner if a pawn reached the end of the board
     winner = pawn_reached_end(board)
     if winner is not None:
@@ -207,7 +207,7 @@ def pawn_war_result(board: chess.Board) -> WinnerColor:
         elif count_pawns(board, chess.BLACK) == 0:
             return "White"
 
-    if len(legal_pawn_war_moves(board)) == 0:
+    if len(legal_pawn_advance_moves(board)) == 0:
         return "Tie"
 
     return None
@@ -219,12 +219,12 @@ def try_move(board: chess.Board, move_text: str) -> tuple[bool, str]:
     except ValueError:
         return False, "Invalid move format. Use moves like e2e4 or d7d5."
 
-    if not is_legal_pawn_war_move(board, move):
+    if not is_legal_pawn_advance_move(board, move):
         return False, "Illegal move."
 
     board.push(move)
 
-    result = pawn_war_result(board)
+    result = pawn_advance_result(board)
     if result is not None:
         if result == "Tie":
             return True, "Tie game!"
@@ -237,19 +237,19 @@ def try_move(board: chess.Board, move_text: str) -> tuple[bool, str]:
 
 # abstract class for bot implementation
 # takes in a board, outputs a move
-class PawnWarBot:
+class PawnAdvanceBot:
     def make_move(self, chess_board: chess.Board) -> chess.Move:
         raise NotImplementedError("Your bot needs to figure out how to make a move!")
 
-# If you run this code, you can play a game of Pawn War against yourself in the terminal. Just enter moves (like e2e4) and see how the game unfolds!
+# If you run this code, you can play a game of Pawn Advance against yourself in the terminal. Just enter moves (like e2e4) and see how the game unfolds!
 # the `if __name__ == "__main__":` makes it so that when other scripts import this file, they don't accidentally start a game in the terminal just by running an import
 if __name__ == "__main__":
-    board = make_pawn_war_board()
+    board = make_pawn_advance_board()
 
     while True:
         print(board)
         print("Turn:", "White" if board.turn == chess.WHITE else "Black")
-        print("Legal moves:", [move.uci() for move in legal_pawn_war_moves(board)])
+        print("Legal moves:", [move.uci() for move in legal_pawn_advance_moves(board)])
 
         move_text = input("Move: ")
         ok, message = try_move(board, move_text)

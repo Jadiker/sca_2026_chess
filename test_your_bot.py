@@ -4,16 +4,16 @@ Use this script to test how your bot performs.
 Uppercase P = white pawns
 Lowercase p = black pawns
 '''
-from gen_pawn_war import *
+from gen_pawn_advance import *
 # choose one of these as the enemy bot to test against
-from example_bots import RandomPawnWarBot, CapturePawnWarBot
-from your_bot import YourPawnWarBot
+from example_bots import RandomPawnAdvanceBot, CapturePawnAdvanceBot
+from your_bot import YourPawnAdvanceBot
 
 
-your_bot = YourPawnWarBot()
-# Use either `enemy_bot = RandomPawnWarBot()` or `enemy_bot = CapturePawnWarBot()` depending on which bot you want to test against
-# Surprisingly, RandomPawnWarBot is actually a stronger opponent than CapturePawnWarBot
-enemy_bot = RandomPawnWarBot()
+your_bot = YourPawnAdvanceBot()
+# Use either `enemy_bot = RandomPawnAdvanceBot()` or `enemy_bot = CapturePawnAdvanceBot()` depending on which bot you want to test against
+# Surprisingly, RandomPawnAdvanceBot is actually a stronger opponent than CapturePawnAdvanceBot
+enemy_bot = RandomPawnAdvanceBot()
 # How many games you want the bots to play against each other.
 games_to_play = 300
 
@@ -34,8 +34,8 @@ for game_index in range(games_to_play):
 
     # set up the game
     current_player = first_player
-    board = make_pawn_war_board()
-    result = pawn_war_result(board)
+    board = make_pawn_advance_board()
+    result = pawn_advance_result(board)
     # keep playing the game until there's a result (win for white, win for black, or tie)
     while result is None:
         if current_player == your_bot:
@@ -47,11 +47,11 @@ for game_index in range(games_to_play):
         print(board)
         # make a move on the copy of the board so that the bot can't accidentally mess with the real board
         move = current_player.make_move(board.copy())
-        if move in legal_pawn_war_moves(board):
+        if move in legal_pawn_advance_moves(board):
             # make the move on the real board
             board.push(move)
             # see if there's a winner (or tie) after that move
-            result = pawn_war_result(board)
+            result = pawn_advance_result(board)
             print(f"{bot_name} made move: {move}")
         else:
             print(f"{bot_name} made an illegal move: {move}.")

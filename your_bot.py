@@ -1,5 +1,5 @@
 # This imports everything that you need
-from gen_pawn_war import *
+from gen_pawn_advance import *
 
 '''
 If you do str(chess_board), it will print out something like:
@@ -20,7 +20,7 @@ where P represents a white pawn, p represents a black pawn, and . represents an 
 
 Useful functions:
 
-legal_pawn_war_moves(board: chess.Board) -> list[chess.Move]
+legal_pawn_advance_moves(board: chess.Board) -> list[chess.Move]
     Returns a list of all legal moves that the current player can make in the given board state
 
 chess_board.copy() -> chess.Board
@@ -90,12 +90,12 @@ def do_i_have_a_pawn_on_f7(chess_board: chess.Board) -> bool
     return does_player_have_a_pawn_on_square(chess_board, my_color, f7_square)
 '''
 
-class YourPawnWarBot(PawnWarBot):
+class YourPawnAdvanceBot(PawnAdvanceBot):
     def make_move(self, chess_board: chess.Board) -> chess.Move:
         # Implement your strategy here! See example_bots.py for some ideas and functions you can use to help you code your bot.
 
         # By default, this bot just makes the first legal move that it finds
         # You should delete the code below and replace it with your own idea
-        legal_moves = legal_pawn_war_moves(chess_board)
+        legal_moves = legal_pawn_advance_moves(chess_board)
         first_legal_move = legal_moves[0]
         return first_legal_move
