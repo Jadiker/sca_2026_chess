@@ -47,6 +47,8 @@ count_pawns(board: chess.Board, color: chess.Color) -> int
 
 Examples:
 
+(See example_bots.py for more examples of how to code a bot.)
+
 Here's how you could figure out if you have a pawn on f7:
 def do_i_have_a_pawn_on_f7(chess_board: chess.Board) -> bool:
     # first, figure out what color player I am
