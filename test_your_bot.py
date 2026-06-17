@@ -7,13 +7,19 @@ Lowercase p = black pawns
 from gen_pawn_advance import *
 # choose one of these as the enemy bot to test against
 from example_bots import RandomPawnAdvanceBot, CapturePawnAdvanceBot
+from AT_bot import YourPawnAdvanceBot as ATBot
+from BH_bot import YourPawnAdvanceBot as BHBot
 from your_bot import YourPawnAdvanceBot
 
+f = open("ATBot_vs_BHBot_results.txt", "a")
+original_print = print
+print = lambda *args, **kwargs: (f.write(" ".join(str(arg) for arg in args) + "\n"), original_print(*args, **kwargs))[1]
 
-your_bot = YourPawnAdvanceBot()
+
+your_bot = ATBot()
 # Use either `enemy_bot = RandomPawnAdvanceBot()` or `enemy_bot = CapturePawnAdvanceBot()` depending on which bot you want to test against
 # Surprisingly, RandomPawnAdvanceBot is actually a stronger opponent than CapturePawnAdvanceBot
-enemy_bot = RandomPawnAdvanceBot()
+enemy_bot = BHBot()
 # How many games you want the bots to play against each other.
 games_to_play = 300
 
@@ -52,7 +58,12 @@ for game_index in range(games_to_play):
             board.push(move)
             # see if there's a winner (or tie) after that move
             result = pawn_advance_result(board)
-            print(f"{bot_name} made move: {move}")
+            print(f"{bot_name} made move: {move} in game {game_index + 1}/{games_to_play}.")
+            # update the player
+            if current_player == first_player:
+                current_player = second_player
+            else:
+                current_player = first_player
         else:
             print(f"{bot_name} made an illegal move: {move}.")
             # if a bot makes an illegal move, they lose immediately
